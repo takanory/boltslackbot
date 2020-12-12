@@ -7,14 +7,21 @@
 ## Getting Started
 
 * [Getting started with Bolt for Python](https://slack.dev/bolt-python/tutorial/getting-started)
-* Slackアプリを作成する
-  * https://api.slack.com/apps/new ここから適当な名前でアプリを作る
-  * App Credentialsを確認する
-* トークンとアプリのインストール
-  * サイドバーの OAuth & Permissions をクリック
-  * Bot Token ScopesのAdd an OAuth Scopeをクリック→ `chat:write` を追加
-  * Install to Workspaceをクリック→SlackのOAuth画面に繊維→アプリをワークスペースにインストール
-  * インストールしたらBot User OAuth Access Tokenが確認できる
+
+### アプリを作成する
+
+* https://api.slack.com/apps/new ここから適当な名前でアプリを作る
+* App Credentialsを確認する
+
+### トークン生成とアプリのインストール
+
+*サイドバーの OAuth & Permissions をクリック
+* Bot Token ScopesのAdd an OAuth Scopeをクリック→ `chat:write` を追加
+* Install to Workspaceをクリック→SlackのOAuth画面に遷移→アプリをワークスペースにインストール
+* インストールしたらBot User OAuth Access Tokenが確認できる
+
+### プロジェクトを作る
+
 * Pythonの証明書を更新しておく
 
 ```sh
@@ -30,7 +37,7 @@ $ source env/bin/activate
 (env) $ pip install slack_bolt
 ```
 
-* 環境変数に設定する
+* 環境変数にトークンを設定する
 
   * your-signing-secret: Basic InformationページのSigning Secret 
   * your-bot-token: OAuth & PermissionsページのBot User OAuth Access Token
@@ -40,7 +47,7 @@ $ export SLACK_SIGNING_SECRET=<your-signing-secret>
 $ export SLACK_BOT_TOKEN=xoxb-<your-bot-token>
 ```
 
-* app.pyを作成して実行する
+* `app.py`を作成して実行する
 
 ```python
 import os
@@ -61,3 +68,35 @@ if __name__ == "__main__":
 (env) python app.py
 ⚡️ Bolt app is running! (development server)
 ```
+
+## イベントを設定する
+
+* ngrokで外からアクセスできるようにする
+  * イベントを受け取れるようにするために [ngrok](https://ngrok.com/) でトンネリングする
+  * 以下で出力されるURLを記録する
+
+```sh
+$ ./ngrok http 3000
+```
+
+* イベントを設定する
+  * アプリのEvent Subscriptionsページに遷移→Enable Eventsをオンにする
+  * ngrokのURL `https://XXXXXXXX.ngrok.io/slack/events` を入力して確認する
+  * 確認済(Verified)になったら、Subscribe to boit eventsに以下を追加する
+    * `message.channels` `message.groups` `message.im` `message.mpim`
+  * Save Changesをクリックする
+  * 権限が変わったのでアプリケーションをインストールし直す
+  
+### メッセージを受け取って返す
+
+* `app.py` に以下を追加して実行する
+  
+```python
+# Listens to incoming messages that contain "hello"
+@app.message("hello")
+def message_hello(message, say):
+    # say() sends a message to the channel where the event was triggered
+    say(f"Hey there <@{message['user']}>!")
+	```
+* 任意のチャンネルにbotを招待する
+* `hello` のメッセージを送信すると応答がある
