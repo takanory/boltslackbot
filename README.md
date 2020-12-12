@@ -134,3 +134,12 @@ def action_button_click(body, ack, say):
     ack()
     say(f"<@{body['user']['id']}> clicked the button")
 ```
+
+## 感想
+
+* bolt for pythonのAPIドキュメントがほしい
+* 1つのライブラリでSlackのボタンとかスラッシュコマンドに対応できるのはよさげ
+  * ボタンのアクションを見分けるの、文字列の action_id だけなの微妙だなと思ったり
+* メッセージを受け取って対応する関数がないと404返すのってどうなのって気がする
+* コマンドごとにプラグイン分けたりする仕組みみたいなのはないのかな。まぁ自分でもジュール分割してimportするしかなさそう
+* メッセージをベースにしたbotを作るだけだったら https://github.com/lins05/slackbot の方がシンプルでわかりやすい
