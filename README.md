@@ -97,7 +97,8 @@ $ ./ngrok http 3000
 def message_hello(message, say):
     # say() sends a message to the channel where the event was triggered
     say(f"Hey there <@{message['user']}>!")
-	```
+```
+
 * 任意のチャンネルにbotを招待する
 * `hello` のメッセージを送信すると応答がある
 
