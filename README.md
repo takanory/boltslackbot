@@ -15,7 +15,7 @@
 
 ### トークン生成とアプリのインストール
 
-*サイドバーの OAuth & Permissions をクリック
+* サイドバーの OAuth & Permissions をクリック
 * Bot Token ScopesのAdd an OAuth Scopeをクリック→ `chat:write` を追加
 * Install to Workspaceをクリック→SlackのOAuth画面に遷移→アプリをワークスペースにインストール
 * インストールしたらBot User OAuth Access Tokenが確認できる
@@ -82,7 +82,7 @@ $ ./ngrok http 3000
 * イベントを設定する
   * アプリのEvent Subscriptionsページに遷移→Enable Eventsをオンにする
   * ngrokのURL `https://XXXXXXXX.ngrok.io/slack/events` を入力して確認する
-  * 確認済(Verified)になったら、Subscribe to boit eventsに以下を追加する
+  * 確認済(Verified)になったら、Subscribe to bot eventsに以下を追加する
     * `message.channels` `message.groups` `message.im` `message.mpim`
   * Save Changesをクリックする
   * 権限が変わったのでアプリケーションをインストールし直す
