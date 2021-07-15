@@ -3,6 +3,13 @@ import random
 import time
 
 from slack_bolt import App
+# https://slack.dev/python-slack-sdk/api-docs/slack_sdk/models/blocks/blocks.html
+from slack_sdk.models.blocks.blocks import ActionsBlock, InputBlock
+# https://slack.dev/python-slack-sdk/api-docs/slack_sdk/models/blocks/block_elements.html
+from slack_sdk.models.blocks.block_elements import (
+    ButtonElement,
+    PlainTextInputElement,
+)
 
 # Initializes your app with your bot token and signing secret
 app = App(
@@ -40,7 +47,21 @@ def action_button_click(body, ack, say):
 
 @app.message(r"^\$choice")
 def choice(message, say):
-    """$choice が指定されるたらテキストエリアとボタンを表示する"""
+    """$choice が指定されるたらテキストエリアとボタンを表示する
+
+    slack_sdk.models.blocksを使ってblocksを作ってみる"""
+    blocks = [
+        InputBlock(
+            label="選択肢をスペース区切りで入力してね2",
+            element=PlainTextInputElement(action_id="choice_text")
+        ),
+        ActionsBlock(
+            elements=[ButtonElement(text="送信", action_id="choice_action")]
+        ),
+    ]
+
+    """
+    ↑上のblocksはこれと同じはず
     blocks = [
         {
             "type": "input",
@@ -70,26 +91,32 @@ def choice(message, say):
             ]
         }
     ]
+    """
+
     say(blocks=blocks, text="選択肢をスペース区切りで入力してね")
 
 
 @app.action("choice_action")
 def choice_action(ack, body, respond, say):
     """指定されたテキストから1つ単語を選択して返すアクション"""
+
+    # まずack()を返す
     ack()
+
+    # 値を取り出す
     values = body['state']['values']
     for k, v in values.items():
         value = v['choice_text']['value']
         break
     text = f"「{value}」が指定されました\n"
-    for i in range(5):  # 5秒sleepして5回送信する
-        choiced = random.choice(value.split())
-        text += f"{i+1}回目は「{choiced}」が選ばれました\n"
-        # respondを使うと元のメッセージが更新される
-        respond(text)
-        # 普通のsayを使ったメッセージ送信もできる
-        say(f"{i+1}回目は「{choiced}」が選ばれました")
-        time.sleep(5)
+
+    choiced = random.choice(value.split())
+    text += f"「{choiced}」が選ばれました\n"
+
+    # respondを使うと元のメッセージが更新される
+    respond(text)
+    # say()を使うと通常のメッセージがチャンネルに送信される
+    say(text)
 
 
 @app.message("こんにちは")
