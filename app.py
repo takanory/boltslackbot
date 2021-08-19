@@ -3,11 +3,18 @@ import random
 
 from slack_bolt import App
 # https://slack.dev/python-slack-sdk/api-docs/slack_sdk/models/blocks/blocks.html
-from slack_sdk.models.blocks.blocks import ActionsBlock, InputBlock
+from slack_sdk.models.blocks.blocks import (
+    ActionsBlock,
+    InputBlock,
+    SectionBlock,
+)
 # https://slack.dev/python-slack-sdk/api-docs/slack_sdk/models/blocks/block_elements.html
 from slack_sdk.models.blocks.block_elements import (
     ButtonElement,
+    Option,
+    PlainTextObject,
     PlainTextInputElement,
+    StaticSelectElement,
 )
 
 # Initializes your app with your bot token and signing secret
@@ -61,7 +68,7 @@ def choice_form(say):
     blocks = [
         InputBlock(
             label="選択肢をスペース区切りで入力してね",
-            element=PlainTextInputElement(action_id="choice_text")
+            element=PlainTextInputElement(action_id="choice_text"),
         ),
         ActionsBlock(
             elements=[ButtonElement(text="送信", action_id="choice_action")]
@@ -89,6 +96,87 @@ def choice_action(ack, body, respond, say):
 
     # respondを使うと元のメッセージが更新される
     respond(text)
+
+
+@app.message(r'^\$status$')
+def status(say):
+    # 単語が指定されていない場合はフォームを出力する
+    blocks = [
+        InputBlock(
+            label="リソース追加",
+            element=PlainTextInputElement(
+                action_id="resource_name",
+                placeholder="リソースの名前"
+            ),
+        ),
+        ActionsBlock(
+            elements=[ButtonElement(text="追加", action_id="status_add")],
+        ),
+        SectionBlock(
+            text="削除するリソース",
+            accessory=StaticSelectElement(
+                placeholder="リソースの名前",
+                action_id="status_del",
+                options=[
+                    Option(text=PlainTextObject(text="Foo"), value="foo"),
+                    Option(text=PlainTextObject(text="Bar"), value="bar"),
+                    Option(text=PlainTextObject(text="Baz"), value="baz"),
+                ]
+            ),
+        ),
+    ]
+    say(blocks=blocks, text="リソースの追加、削除など")
+
+
+@app.message(r'^\$modal$')
+def modal_button(say):
+    """ダイアログを表示するためのボタンを表示する"""
+    blocks = [
+        ActionsBlock(
+            elements=[ButtonElement(text="modal表示", action_id="modal_open")]
+        ),
+    ]
+    say(blocks=blocks, text="モーダル表示ボタン")
+
+
+@app.action("modal_open")
+def modal_test(ack, body, client):
+    """ダウアログを表示"""
+    ack()
+    # 組み込みのクライアントで views_open を呼び出し
+    client.views_open(
+        # 受け取りから 3 秒以内に有効な trigger_id を渡す
+        trigger_id=body["trigger_id"],
+        # ビューのペイロード
+        view={
+            "type": "modal",
+            # ビューの識別子
+            "callback_id": "view_1",
+            "title": {"type": "plain_text", "text":"My App"},
+            "submit": {"type": "plain_text", "text":"Submit"},
+            "blocks": [
+                {
+                    "type": "section",
+                    "text": {"type": "mrkdwn", "text":"Welcome to a modal with _blocks_"},
+                    "accessory": {
+                        "type": "button",
+                        "text": {"type": "plain_text", "text":"Click me!"},
+                        "action_id": "button_abc"
+                    }
+                },
+                {
+                    "type": "input",
+                    "block_id": "input_c",
+                    "label": {"type": "plain_text", "text":"What are your hopes and dreams?"},
+                    "element": {
+                        "type": "plain_text_input",
+                        "action_id": "dreamy_input",
+                        "multiline":True
+                    }
+                }
+            ]
+        }
+    )
 
 
 @app.message("こんにちは")
