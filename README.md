@@ -34,7 +34,7 @@ $ /Applications/Python\ 3.9/Install\ Certificates.command
 $ cd bolstslackbot
 $ python3.9 -m venv env
 $ source env/bin/activate
-(env) $ pip install slack_bolt
+(env) $ pip install -r requirements.txt  # slack-bolt と slask-sdk が入る
 ```
 
 * 環境変数にトークンを設定する
