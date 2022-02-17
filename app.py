@@ -10,6 +10,9 @@ from slack_sdk.models.blocks.block_elements import (
     ButtonElement,
     PlainTextInputElement,
 )
+# https://slack.dev/python-slack-sdk/api-docs/slack_sdk/models/dialogs/index.html
+# https://github.com/slackapi/python-slack-sdk/blob/2a4487c81fa95d1cb07a3d916887ac10d67d79ab/slack/web/classes/readme.md
+from slack_sdk.models.dialogs import DialogBuilder
 
 # Initializes your app with your bot token and signing secret
 app = App(
@@ -43,6 +46,16 @@ def action_button_click(body, ack, say):
     # Acknowledge the action
     ack()
     say(f"<@{body['user']['id']}> clicked the button")
+
+
+@app.message(r"^\$dialog$")
+def choice(message, say):
+    """$choiced が指定されたらテキスト入力ダイアログを表示する。
+    """
+    dialog = DialogBuilder()
+    dialog.title("テストダイアログ")
+    dialog.text_field(name="なまえ", label="らべる")
+    say(blocks=dialog, text="選択肢をスペース区切りで入力してね")
 
 
 @app.message(r"^\$choice")
@@ -114,9 +127,9 @@ def choice_action(ack, body, respond, say):
     text += f"「{choiced}」が選ばれました\n"
 
     # respondを使うと元のメッセージが更新される
-    respond(text)
+    respond("元のメッセージを更新\n" + text)
     # say()を使うと通常のメッセージがチャンネルに送信される
-    say(text)
+    say("通常メッセージ\n" + text)
 
 
 @app.message("こんにちは")
