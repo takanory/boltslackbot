@@ -54,7 +54,6 @@ def action_button_click(body, ack, say):
     say(f"<@{body['user']['id']}> clicked the button")
 
 
-<<<<<<< HEAD
 @app.message(r"^\$dialog$")
 def choice(message, say):
     """$choiced が指定されたらテキスト入力ダイアログを表示する。
@@ -65,10 +64,6 @@ def choice(message, say):
     say(blocks=dialog, text="選択肢をスペース区切りで入力してね")
 
 
-@app.message(r"^\$choice")
-def choice(message, say):
-    """$choice が指定されるたらテキストエリアとボタンを表示する
-=======
 @app.message(r"^\$choice\s+(.*)$")
 def choice(say, context):
     """$choice word1 word2の形式で指定されたらrandom.choice()を実行する"""
@@ -77,10 +72,9 @@ def choice(say, context):
     say(choiced)
 
 
-@app.message(r"^\$choice$")
-def choice_form(say):
-    """$choice が指定されたらテキストエリアとボタンを表示する
->>>>>>> 33b3467352c35237e054e16b8c161f05c7ef0c63
+@app.message(r"^\$choice")
+def choice(message, say):
+    """$choice が指定されるたらテキストエリアとボタンを表示する
 
     slack_sdk.models.blocksを使ってblocksを作ってみる"""
     # 単語が指定されていない場合はフォームを出力する
