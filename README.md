@@ -25,14 +25,14 @@
 * Pythonの証明書を更新しておく
 
 ```sh
-$ /Applications/Python\ 3.9/Install\ Certificates.command
+$ /Applications/Python\ 3.10/Install\ Certificates.command
 ```
 
 * プロジェクトを作る
 
 ```sh
 $ cd bolstslackbot
-$ python3.9 -m venv env
+$ python3.10 -m venv env
 $ source env/bin/activate
 (env) $ pip install -r requirements.txt  # slack-bolt と slask-sdk が入る
 ```
