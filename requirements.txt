@@ -1,2 +1,4 @@
+requests==2.27.1
 slack-bolt==1.11.4
 slack-sdk==3.14.1
+

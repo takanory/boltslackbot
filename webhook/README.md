@@ -72,9 +72,9 @@ response = webhook.send(text="Hello from Pyton Slack SDK!")
 
 ## メッセージをリッチにする
 
-* `*bold text*`
-* `:emoji_name:`
-* `<url|text>`
+### テキストのフォーマット
+
+* `\n`、`*bold text*`、`:emoji_name:`、`<url|text>`
 * 参考: [Formatting text for app surfaces](https://api.slack.com/reference/surfaces/formatting)
 
 ```python
@@ -84,6 +84,34 @@ response = webhook.send(text="Hello from\n*Pyton Slack SDK*! :tada:")
 ```python
 response = webhook.send(text="Hello from *Pyton Slack SDK* (<https://slack.dev/python-slack-sdk/|URL>)!! :tada:")
 ```
+
+### Message Attachments
+
+* 現在はLayout Blocks(後述)が推奨されている
+* 参考: [Reference: Secondary message attachments | Slack](https://api.slack.com/reference/messaging/attachments)
+
+```python
+
+fields = [
+    {"title": "Love", "value": "Ferrets, :beer:, LEGO", "short": True},
+    {"title": "From", "value": "Japan :jp:", "short": True},
+]
+attachments =  [{
+    "pretext": "Nice to meet you!!",
+    "author_name": "Takanori Suzuki",
+    "author_link": "https://twitter.com/takanory/",
+    "text": "*THANK YOU* for coming to my talk !:tada: Please give me *feedback* about this talk :bow:",
+    "fields": fields,
+}]
+
+response = webhook.send(attachments=attachments, unfurl_links=["https://twitter.com/takanory"])
+```
+
+### Layout Blocks
+
+* 参考
+  * [Block Kit](https://api.slack.com/block-kit)
+  * [Reference: Layout blocks](https://api.slack.com/reference/block-kit/blocks)
 
 ## 参考
 
