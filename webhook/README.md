@@ -93,7 +93,7 @@ response = webhook.send(text="Hello from *Pyton Slack SDK* (<https://slack.dev/p
 ```python
 
 fields = [
-    {"title": "Love", "value": "Ferrets, :beer:, LEGO", "short": True},
+    {"title": "Love", "value": ":beer:, Ferrets, LEGO", "short": True},
     {"title": "From", "value": "Japan :jp:", "short": True},
 ]
 attachments =  [{
