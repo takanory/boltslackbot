@@ -117,7 +117,7 @@ def handle_choice_modal(ack: Ack, body: dict, context: BoltContext,
 
 
 @app.view("choice-modal-id")
-def handle_choice_modal_view(view: dict, ack: Ack, say: Say, respond: Respond):
+def handle_choice_modal_view(view: dict, ack: Ack, say: Say):
     inputs = view["state"]["values"]
     value = inputs["input-block"]["input-element"]["value"]
     choiced = _choice(value)
@@ -125,7 +125,7 @@ def handle_choice_modal_view(view: dict, ack: Ack, say: Say, respond: Respond):
     ack()
 
     say(text=f"「{choiced}」が選ばれました", channel=channel_id)
-    respond(f"「{choiced}」が選ばれました")
+    # respond(f"「{choiced}」が選ばれました")
 
 
 if __name__ == "__main__":

@@ -66,3 +66,12 @@ if __name__ == "__main__":
 ```
 
 ![bot-hi](bot-hi.png)
+
+## モーダルの実装
+
+* 以下の記事を参考に実装
+* [Slack アプリでのモーダルの使い方完全ガイド - Qiita](https://qiita.com/seratch/items/0b1790697281d4cf6ab3)
+* 以下の処理の流れとなっている
+  * `choice_modal()` 関数: `$choice2` メッセージ送信→応答メッセージでモーダル表示用のボタンを表示
+  * `handle_choice_modal()` 関数: ボタンをクリック→モーダルを表示
+  * `handle_choice_modal_view()` 関数: モーダルに入力して「送信」→結果のメッセージを送信
