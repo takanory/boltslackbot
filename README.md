@@ -143,3 +143,7 @@ def action_button_click(body, ack, say):
 * メッセージを受け取って対応する関数がないと404返すのってどうなのって気がする
 * コマンドごとにプラグイン分けたりする仕組みみたいなのはないのかな。まぁ自分でもジュール分割してimportするしかなさそう
 * メッセージをベースにしたbotを作るだけだったら https://github.com/lins05/slackbot の方がシンプルでわかりやすい
+
+## 参考
+
+* [Slack アプリでのモーダルの使い方完全ガイド - Qiita](https://qiita.com/seratch/items/0b1790697281d4cf6ab3#%E7%8A%B6%E6%85%8B%E3%82%92%E7%B0%A1%E5%8D%98%E3%81%AB%E5%BC%95%E3%81%8D%E6%B8%A1%E3%81%99%E3%81%9F%E3%82%81%E3%81%AB%E3%81%AF-private_metadata-%E3%82%92%E4%BD%BF%E3%81%86)
